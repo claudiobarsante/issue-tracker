@@ -28,6 +28,15 @@ const NewIssuePage = () => {
   const [error, setError] = useState("");
 
   const router = useRouter();
+
+  const handleNewIssueFormSubmit = handleSubmit(async (data) => {
+    try {
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error) {
+      setError("An unexpected error occurred");
+    }
+  });
   return (
     <div className="max-w-xl">
       {error && (
@@ -38,33 +47,30 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error) {
-            setError("An unexpected error occurred");
-          }
-        })}
-      >
-        <TextField.Root placeholder="Title" {...register("title")} />
-        <ErrorMessage>{errors.title?.message}</ErrorMessage>
+      <form className="space-y-3" onSubmit={handleNewIssueFormSubmit}>
+        <fieldset>
+          <TextField.Root
+            placeholder="Title"
+            {...register("title")}
+            aria-label="issue title"
+            aria-invalid={errors.title ? "true" : "false"}
+          />
+          <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <SimpleMDE placeholder="Description" {...field} />
-          )}
-        />
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <SimpleMDE placeholder="Description" {...field} />
+            )}
+          />
 
-        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button disabled={isSubmitting}>
-          Submit New Issue {isSubmitting && <Spinner />}
-        </Button>
+          <Button disabled={isSubmitting}>
+            Submit New Issue {isSubmitting && <Spinner />}
+          </Button>
+        </fieldset>
       </form>
     </div>
   );

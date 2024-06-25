@@ -6,12 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaInfoCircle } from "react-icons/fa";
-import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
+
+/**SimpleMDE is a client-side component, so you need to disable the server side rendering */
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -54,6 +59,7 @@ const NewIssuePage = () => {
             {...register("title")}
             aria-label="issue title"
             aria-invalid={errors.title ? "true" : "false"}
+            className="mb-4"
           />
           <ErrorMessage>{errors.title?.message}</ErrorMessage>
 

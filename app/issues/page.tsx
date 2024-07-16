@@ -43,5 +43,8 @@ const IssuesPage = async () => {
     </div>
   );
 };
+// -- Change the dynamic behavior of the page to fully dynamic
+// -- Force dynamic rendering, which will result in routes being rendered for each user at request time
+export const dynamic = "force-dynamic";
 
 export default IssuesPage;

@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
-import { Box, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
+import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 
@@ -20,12 +21,18 @@ const IssueDetailPage = async ({ params }: Props) => {
   if (!issue) notFound();
 
   return (
-    <Grid columns={{ initial: "1", md: "2" }} gap="5">
-      <Box>
+    //! Attention: md on grid it's a break point for Radix components and it's represent
+    //! Tablets (portrait) 768px screens  that is different from Tailwind. In Tailwind is 'md'
+    <Grid columns={{ initial: "1", sm: "5" }} gap="5">
+      {/*this box will take 4 columms of the five available columns */}
+      <Box className="md: col-span-4">
         <IssueDetails issue={issue} />
       </Box>
       <Box>
-        <EditIssueButton issueId={issue.id} />
+        <Flex direction="column" gap="4">
+          <EditIssueButton issueId={issue.id} />
+          <DeleteIssueButton issueId={issue.id} />
+        </Flex>
       </Box>
     </Grid>
   );

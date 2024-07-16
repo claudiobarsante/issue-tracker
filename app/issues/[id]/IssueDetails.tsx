@@ -12,6 +12,8 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
         <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
       {/* prose class is from the '@tailwindcss/typography' plugin */}
+      {/*apply max-w-full with prose, so the card strech and take the available space while keeping
+       the number of characters on witch line to 65 */}
       <Card className="prose max-w-full" mt="4">
         <ReactMarkdown>{issue.description}</ReactMarkdown>
       </Card>
